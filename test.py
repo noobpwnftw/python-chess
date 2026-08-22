@@ -77,6 +77,50 @@ class SquareTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.assertEqual(chess.parse_square("a0"))
 
+    def test_parse_file(self):
+        self.assertEqual(chess.parse_file("a"), 0)
+        self.assertEqual(chess.parse_file("b"), 1)
+        self.assertEqual(chess.parse_file("c"), 2)
+        self.assertEqual(chess.parse_file("d"), 3)
+        self.assertEqual(chess.parse_file("e"), 4)
+        self.assertEqual(chess.parse_file("f"), 5)
+        self.assertEqual(chess.parse_file("g"), 6)
+        self.assertEqual(chess.parse_file("h"), 7)
+        with self.assertRaises(ValueError):
+            chess.parse_file("A")
+
+    def test_file_name(self):
+        self.assertEqual(chess.file_name(0), "a")
+        self.assertEqual(chess.file_name(1), "b")
+        self.assertEqual(chess.file_name(2), "c")
+        self.assertEqual(chess.file_name(3), "d")
+        self.assertEqual(chess.file_name(4), "e")
+        self.assertEqual(chess.file_name(5), "f")
+        self.assertEqual(chess.file_name(6), "g")
+        self.assertEqual(chess.file_name(7), "h")
+
+    def test_parse_rank(self):
+        self.assertEqual(chess.parse_rank("1"), 0)
+        self.assertEqual(chess.parse_rank("2"), 1)
+        self.assertEqual(chess.parse_rank("3"), 2)
+        self.assertEqual(chess.parse_rank("4"), 3)
+        self.assertEqual(chess.parse_rank("5"), 4)
+        self.assertEqual(chess.parse_rank("6"), 5)
+        self.assertEqual(chess.parse_rank("7"), 6)
+        self.assertEqual(chess.parse_rank("8"), 7)
+        with self.assertRaises(ValueError):
+            chess.parse_rank("0")
+
+    def test_rank_name(self):
+        self.assertEqual(chess.rank_name(0), "1")
+        self.assertEqual(chess.rank_name(1), "2")
+        self.assertEqual(chess.rank_name(2), "3")
+        self.assertEqual(chess.rank_name(3), "4")
+        self.assertEqual(chess.rank_name(4), "5")
+        self.assertEqual(chess.rank_name(5), "6")
+        self.assertEqual(chess.rank_name(6), "7")
+        self.assertEqual(chess.rank_name(7), "8")
+
     def test_square_distance(self):
         self.assertEqual(chess.square_distance(chess.A1, chess.A1), 0)
         self.assertEqual(chess.square_distance(chess.A1, chess.H8), 7)

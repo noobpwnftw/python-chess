@@ -288,18 +288,18 @@ def file_name(file: File) -> str:
     """Gets the name of the file, like ``a``."""
     return FILE_NAMES[file]
 
-def parse_rank(name: str) -> File:
+def parse_rank(name: str) -> Rank:
     """
     Gets the rank index for the given rank *name*
     (e.g., ``1`` returns ``0``).
 
     :raises: :exc:`ValueError` if the rank name is invalid.
     """
-    return FILE_NAMES.index(name)
+    return RANK_NAMES.index(name)
 
 def rank_name(rank: Rank) -> str:
     """Gets the name of the rank, like ``1``."""
-    return FILE_NAMES[rank]
+    return RANK_NAMES[rank]
 
 def square_file(square: Square) -> File:
     """Gets the file index of the square where ``0`` is the a-file."""
