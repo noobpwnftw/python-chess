@@ -5,6 +5,7 @@ import copy
 import logging
 import os
 import os.path
+import pathlib
 import platform
 import struct
 import sys
@@ -5029,6 +5030,22 @@ class ChesstbTestCase(unittest.TestCase):
         tables = chess.chesstb.open_tablebase("data/chesstb")
         tables.dirs["dtm50"].clear()
         return tables
+
+    def test_url_directory_is_rejected(self):
+        # open_tablebase searches the local filesystem. A URL given as the
+        # directory used to be accepted and joined with os.path.join, which on
+        # Windows put a backslash before the kind subdirectory and then reported
+        # every table missing. It must fail at open and say why.
+        url = "https://huggingface.co/buckets/noobpwnftw/chesstb/resolve/full"
+        with self.assertRaises(ValueError) as ctx:
+            chess.chesstb.open_tablebase(url)
+        self.assertIn("URL", str(ctx.exception))
+        with chess.chesstb.open_tablebase("data/chesstb") as tables:
+            with self.assertRaises(ValueError):
+                tables.add_directory(url)
+        # A local directory given as a path object must still open.
+        with chess.chesstb.open_tablebase(pathlib.Path("data/chesstb")) as tables:
+            self.assertEqual(tables.probe_wdl(chess.Board("8/6k1/8/5Q2/8/8/8/7K w - - 0 1")), 2)
 
     # --- The four table kinds, and how a directory is searched for them. ---
 

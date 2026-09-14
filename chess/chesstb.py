@@ -2777,6 +2777,15 @@ class Tablebase:
         re-resolved, so a late directory only affects materials not yet looked
         up.
         """
+        if "://" in os.fspath(directory):
+            # os.path.join would splice a platform separator into the URL (on
+            # Windows, a backslash before the kind), after which every table
+            # reports missing and nothing names the real cause.
+            raise ValueError(
+                f"{directory!r} is a URL: open_tablebase and add_directory search "
+                "the local filesystem. To read tables remotely, subclass Tablebase, "
+                "override _find and add_directory, and give each table class an "
+                "_open_source that returns a buffer over the remote file.")
         for kind in self.KINDS:
             with self._open_locks[kind]:
                 self.dirs[kind].append(os.path.join(directory, kind))
